@@ -1,4 +1,5 @@
 import View from './view';
+import Controller from './controller';
 
 import './styles/style.css'
 
@@ -9,4 +10,5 @@ function init() {
 
 init();
 
-window.VIEW = View
+window.VIEW = View;
+window.CONTROLLER = Controller;
