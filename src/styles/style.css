@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.display-wrapper {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.display {
+    width: 200px;
+    height: 40px;
+    border: solid 1px;
+    border-bottom: none;
+    text-align: center;
+}
+
+#pixi-shapes {
+    /* width: 80vw;
+    height: 70vh; */
+    border: solid 1px;
+}
