@@ -19,11 +19,13 @@
 }
 
 .display {
-    width: 200px;
-    height: 40px;
+    padding: 10px;
     border: solid 1px;
     border-bottom: none;
-    text-align: center;
+}
+
+.display:last-child {
+    border-left: none;
 }
 
 #pixi-shapes {

@@ -9,10 +9,28 @@
     <div class="container">
         <div class="content">
             <div class="display-wrapper">
-                <div class="display">Number of current shapes</div>
-                <div class="display">Surface area occupied by shapes</div>
+                <div class="display">
+                    Number of current shapes:
+                    <span id="shapes-quantity">0</span>
+                </div>
+                <div class="display">
+                    Surface area occupied by shapes
+                    <span id="shapes-area">0</span>
+                </div>
             </div>
             <canvas id="pixi-shapes"></canvas>
+            <div class="btn-wrapper">
+                <div class="btn-block">
+                    <button class="btn-decrease" id="dec-shapes-btn">-</button>
+                    <button class="increase" id="inc-shapes-btn">+</button>
+                    <input type="text" value="0" id="shapes-per-second-input" readonly>
+                </div>
+                <div class="btn-block">
+                    <button class="btn-decrease" id="dec-gravity-btn">-</button>
+                    <button class="increase" id="inc-gravity-btn">+</button>
+                    <input type="text" value="0" id="gravity-input" readonly>
+                </div>
+            </div>
         </div>
     </div>
 </body>
