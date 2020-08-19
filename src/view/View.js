@@ -1,51 +1,78 @@
-import * as PIXI from 'pixi.js';
+import { Application, Rectangle } from 'pixi.js';
 
-const Application = PIXI.Application;
+import { getElementById, getShapesArea } from '../assets/utils/utils';
 
 export default class View {
     constructor(controller, model) {
+        if (View.isExists) return View.instance;
+
+        View.instance = this;
+        View.isExists = true;
         this.controller = controller;
         this.model = model;
+        this.element = getElementById('pixi-shapes');
+        this.app = new Application({
+            view: this.element,
+            height: 500,
+            backgroundColor: 0xFFFFFF
+        });
     }
 
     init() {
-        const node = document.getElementById('pixi-shapes');
-        this.app = new Application({
-            view: node,
-            height: 500,
-            backgroundColor: 0xFFFFFF
-        })
-
-        return this.app;
+        this.app.stage.hitArea = new Rectangle(0, 0 , this.app.screen.width, this.app.screen.height);
+        this.app.stage.interactive = true;
+        this.app.ticker.add(delta => this.animateFalling(delta));
     }
 
-    getElement(id) {
-        return document.getElementById(id);
+    showShapesQuantity() {
+        const { children } = this.app.stage;
+
+        if (!this.shapesQuantity) this.shapesQuantity = getElementById('shapes-quantity');
+
+        this.shapesQuantity.textContent = children.length;
     }
 
-    showShapesQuantity(value) {
-        const element = this.getElement('shapes-quantity');
-        node.textContent = value;
-    }
+    showShapesArea() {
+        const { children } = this.app.stage;
 
-    showShapesArea(value) {
-        const element = this.getElement('shapes-area');
-        node.textContent = value;
+        if (!this.shapesArea) this.shapesArea = getElementById('shapes-area');
+
+        this.shapesArea.textContent = Math.floor(getShapesArea(children));
     }
 
     showGravity(value) {
-        const element = this.getElement('gravity-input');
+        const element = getElementById('gravity-input');
+
         element.value = value;
     }
 
     showShapesPerSecond(value) {
-        const element = this.getElement('shapes-per-second-input');
+        const element = getElementById('shapes-per-second-input');
+
         element.value = value;
     }
 
-    animateFalling() {}
+    animateFalling(delta) {
+        const shapes = this.app.stage.children;
+        if (!shapes.length) return;
 
-    render() {
-        this.animateFalling();
+        shapes.forEach(child => {
+            if (child.position.y > this.app.screen.height + 100) {
+                child.destroy();
+                this.showShapesQuantity();
+                this.showShapesArea();
+
+                return
+            }
+            child.y += 1.5 * delta;
+        })
+    }
+
+    renderShapes(shapesList = []) {
+        shapesList.forEach(shape => {
+            this.app.stage.addChild(shape);
+            this.showShapesQuantity();
+            this.showShapesArea();
+        });
     }
 }
