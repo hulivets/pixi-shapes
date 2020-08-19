@@ -1,7 +1,6 @@
 import { Application, Rectangle } from 'pixi.js';
 
 import { getElementById, getShapesArea } from '../assets/utils/utils';
-
 export default class View {
     constructor(controller, model) {
         if (View.isExists) return View.instance;
@@ -14,13 +13,16 @@ export default class View {
         this.app = new Application({
             view: this.element,
             height: 500,
+            resolution: window.devicePixelRatio,
             backgroundColor: 0xFFFFFF
         });
+        this.PIXELS_PER_METER = this.app.screen.width / 1000;
     }
 
     init() {
         this.app.stage.hitArea = new Rectangle(0, 0 , this.app.screen.width, this.app.screen.height);
         this.app.stage.interactive = true;
+        this.app.stage.buttonMode = true;
         this.app.ticker.add(delta => this.animateFalling(delta));
     }
 
@@ -52,19 +54,33 @@ export default class View {
         element.value = value;
     }
 
-    animateFalling(delta) {
-        const shapes = this.app.stage.children;
-        if (!shapes.length) return;
+    getAppWidth() {
+        return this.app.screen.width;
+    }
 
-        shapes.forEach(child => {
-            if (child.position.y > this.app.screen.height + 100) {
-                child.destroy();
+    getCanvasElement() {
+        return this.app.stage;
+    }
+
+    updateGravity(gravity) {
+        this.gravity = gravity;
+    }
+
+    animateFalling(delta) {
+        const { children } = this.app.stage;
+        if (!children.length) return;
+
+        children.forEach(shape => {
+            if (shape.position.y - 120 > this.app.renderer.height / this.app.renderer.resolution) {
+                shape.destroy();
                 this.showShapesQuantity();
                 this.showShapesArea();
 
                 return
             }
-            child.y += 1.5 * delta;
+
+            shape.vY += this.gravity * delta * this.PIXELS_PER_METER;
+            shape.position.y += shape.vY / (1000 / delta);
         })
     }
 

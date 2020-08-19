@@ -6,15 +6,12 @@ export const getRandomColor = () => {
     return Math.random() * 0xFFFFFF
 };
 
-export const getRandomPos = (min, max, radius) => {
-    return {
-        x : Math.floor(Math.random() * (max - min) + min) + radius,
-        y : -radius
-    }
+export const getRandomPos = (min, max) => {
+    return Math.random() * (max - min) + min
 };
 
 export const getRandomInt = (min, max) => {
-    return Math.floor(Math.random() * (max - min) + min);
+    return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 export const getPolygonArea = (paths = []) => {

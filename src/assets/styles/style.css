@@ -20,8 +20,14 @@
 
 .display {
     padding: 10px;
+    min-width: 300px;
     border: solid 1px;
     border-bottom: none;
+}
+
+.display span {
+    font-size: 20px;
+    color: darkblue;
 }
 
 .display:last-child {
@@ -29,14 +35,14 @@
 }
 
 #pixi-shapes {
-    /* width: 80vw;
-    height: 70vh; */
-    border: solid 1px;
+    width: 900px;
+    border: solid 1px #000;
 }
 
 .btn-wrapper {
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
 .btn-block {

@@ -29,6 +29,8 @@ export default class Model {
                 this.state.gravity += 1;
                 return this.state.gravity;
             case 'decrease':
+                if (this.state.gravity === 0) return this.state.gravity;
+
                 this.state.gravity -= 1;
                 return this.state.gravity;
             default:
@@ -42,6 +44,8 @@ export default class Model {
                 this.state.shapesPerSecond += 1;
                 return this.state.shapesPerSecond;
             case 'decrease':
+                if (this.state.shapesPerSecond === 0) return this.state.shapesPerSecond;
+
                 this.state.shapesPerSecond -= 1;
                 return this.state.shapesPerSecond;
             default:
@@ -51,20 +55,24 @@ export default class Model {
 
     getRandomShape(pos) {
         const array = [
-            this.createCircle(pos),
-            this.createEllipse(pos),
-            this.createPolygon(pos)
+            this.createCircle,
+            this.createEllipse,
+            this.createPolygon
         ];
 
-        const randomInt = getRandomInt(0, 3);
-
-        return array[randomInt];
+        const randomInt = getRandomInt(0, array.length - 1);
+        const shape = array[randomInt];
+        
+        return shape(pos)
     }
 
-    createCircle(pos) {
+    createCircle = (pos) => {
         const { radius } = this.state;
         const g = new Graphics();
 
+        g.interactive = true;
+        g.buttonMode = true;
+        g.vY = 0;
         g.area = Math.PI * radius * radius;
         g.beginFill(getRandomColor());
         g.lineStyle(3, 0x000000, 0.6);
@@ -74,10 +82,13 @@ export default class Model {
         return g;
     }
 
-    createEllipse(pos) {
+    createEllipse = (pos) => {
         const { radius } = this.state;
         const g = new Graphics();
 
+        g.interactive = true;
+        g.buttonMode = true;
+        g.vY = 0;
         g.area = Math.PI * radius * radius / 2;
         g.beginFill(getRandomColor());
         g.lineStyle(3, 0x000000, 0.6);
@@ -87,10 +98,10 @@ export default class Model {
         return g;
     }
 
-    createPolygon(pos) {
+    createPolygon = (pos) => {
         const { radius } = this.state;
         const paths = [];
-        const sides = getRandomInt(3, 7);
+        const sides = getRandomInt(3, 6);
 
         for (let i = 0; i < sides; i++) {
             const x = pos.x + radius * Math.cos(360 / 2 * sides + (2 * Math.PI * i / sides ));
@@ -100,6 +111,9 @@ export default class Model {
 
         const g = new Graphics();
 
+        g.interactive = true;
+        g.buttonMode = true;
+        g.vY = 0;
         g.beginFill(getRandomColor());
         g.lineStyle(3, 0x000000, 0.6);
         g.drawPolygon(paths);
