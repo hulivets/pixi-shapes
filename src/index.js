@@ -12,6 +12,3 @@ function init() {
 }
 
 init();
-
-window.VIEW = View
-window.MODEL = Model

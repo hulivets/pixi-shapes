@@ -57,7 +57,7 @@ export default class Model {
         const array = [
             this.createCircle,
             this.createEllipse,
-            this.createPolygon
+            this.createPolygon,
         ];
 
         const randomInt = getRandomInt(0, array.length - 1);
@@ -104,8 +104,8 @@ export default class Model {
         const sides = getRandomInt(3, 6);
 
         for (let i = 0; i < sides; i++) {
-            const x = pos.x + radius * Math.cos(360 / 2 * sides + (2 * Math.PI * i / sides ));
-            const y = pos.y + radius * Math.sin(360 / 2 * sides + (2 * Math.PI * i / sides ));
+            const x = pos.x + radius * Math.cos(3 + (2 * Math.PI * i / sides));
+            const y = pos.y + radius * Math.sin(3 + (2 * Math.PI * i / sides));
             paths.push(x, y)
         }
 

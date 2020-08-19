@@ -45,13 +45,13 @@ export default class View {
     showGravity(value) {
         const element = getElementById('gravity-input');
 
-        element.value = value;
+        element.value = `Gravity value: ${value}`;
     }
 
     showShapesPerSecond(value) {
         const element = getElementById('shapes-per-second-input');
 
-        element.value = value;
+        element.value = `Shapes per second: ${value}`;
     }
 
     getAppWidth() {
