@@ -7,12 +7,11 @@ import {
 } from '../assets/utils/utils';
 
 export default class Model {
-    constructor(view) {
+    constructor() {
         if (Model.isExists) return Model.instance;
 
         Model.instance = this;
         Model.isExists = true;
-        this.view = view;
         this.state = {
             gravity          : 10,
             radius           : 50,

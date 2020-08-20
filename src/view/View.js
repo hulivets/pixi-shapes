@@ -2,13 +2,11 @@ import { Application, Rectangle } from 'pixi.js';
 
 import { getElementById, getShapesArea } from '../assets/utils/utils';
 export default class View {
-    constructor(controller, model) {
+    constructor() {
         if (View.isExists) return View.instance;
 
         View.instance = this;
         View.isExists = true;
-        this.controller = controller;
-        this.model = model;
         this.element = getElementById('pixi-shapes');
         this.app = new Application({
             view: this.element,
