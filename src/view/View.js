@@ -1,6 +1,9 @@
 import { Application, Rectangle } from 'pixi.js';
 
-import { getElementById, getShapesArea } from '../assets/utils/utils';
+import {
+    getElementById,
+    getShapesArea,
+} from '../assets/utils/utils';
 export default class View {
     constructor() {
         if (View.isExists) return View.instance;
@@ -62,6 +65,15 @@ export default class View {
 
     updateGravity(gravity) {
         this.gravity = gravity;
+    }
+
+    changeFillByType(type) {
+        const { children } = this.app.stage;
+        if (!children.length) return;
+
+        const childrenFiltered = children.filter(shape => shape.type === type);
+
+        childrenFiltered.forEach(child => child.tint = Math.random() * 0xFFFFFF);
     }
 
     animateFalling(delta) {

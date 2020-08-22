@@ -57,6 +57,7 @@ export default class Controller {
         const shape = e.target;
 
         shape.destroy();
+        this.view.changeFillByType(shape.type)
         this.view.showShapesQuantity();
         this.view.showShapesArea();
     }
