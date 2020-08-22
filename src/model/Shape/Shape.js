@@ -7,28 +7,27 @@ import {
 } from '../../assets/utils/utils';
 
 class Shape {
-    constructor() {
+    constructor({pos, radius, strokeWidth, strokeColor, alpha}) {
         this.shape = new Graphics();
         this.shape.interactive = true;
         this.shape.buttonMode = true;
         this.shape.vY = 0;
         this.fill = getRandomColor();
         this.shape.type = null;
-    }
+        this.pos = pos;
+        this.radius = radius;
+        this.strokeWidth = strokeWidth || 1;
+        this.strokeColor = strokeColor || 0x000000;
+        this.alpha = alpha || 1;
+    }   
 }
 
 export class Circle extends Shape {
-    constructor({ pos, radius, strokeWidth, strokeColor, alpha }) {
-        super();
+    constructor(options) {
+        super(options);
 
         this.shape.type = 'circle';
-        this.pos = pos;
-        this.radius = radius;
-        this.strokeWidth = strokeWidth;
-        this.stokeColor = strokeColor;
-        this.alpha = alpha || 1;
     }
-
 
     draw() {
         this.shape.area = Math.PI * (this.radius * this.radius);
@@ -42,15 +41,8 @@ export class Circle extends Shape {
 }
 
 export class Ellipse extends Shape {
-    constructor({ pos, radius, strokeWidth, strokeColor, alpha }) {
-        super();
-
-        this.shape.type = 'ellipse';
-        this.pos = pos;
-        this.radius = radius;
-        this.strokeWidth = strokeWidth;
-        this.stokeColor = strokeColor;
-        this.alpha = alpha || 1;
+    constructor(options) {
+        super(options);
     }
 
     draw() {
@@ -65,15 +57,10 @@ export class Ellipse extends Shape {
 }
 
 export class Polygon extends Shape {
-    constructor({ pos, radius, sides, strokeWidth, strokeColor, alpha }) {
-        super();
+    constructor(options) {
+        super(options);
 
-        this.pos = pos;
-        this.radius = radius;
-        this.sides = sides || getRandomInt(3, 6);
-        this.strokeWidth = strokeWidth;
-        this.stokeColor = strokeColor;
-        this.alpha = alpha || 1;
+        this.sides = options.sides || getRandomInt(3, 6);
         this.paths = this._getPaths(this.sides);
         this.shape.type = this._getShapeType(this.sides)
     }
