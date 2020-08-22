@@ -12,13 +12,13 @@ export default class Controller {
         this.isGravityDisbled = false;
     }
 
-    // handlears
-
+    // Handlers
     decreaseGravity(e) {
         e.preventDefault();
 
         const value = this.model.changeGravity('decrease');
 
+        // update gravity value
         this.view.showGravity(value);
         this.view.updateGravity(value)
     }
@@ -28,6 +28,7 @@ export default class Controller {
 
         const value = this.model.changeGravity('increase');
 
+        // update gravity value
         this.view.showGravity(value);
         this.view.updateGravity(value)
     }
@@ -36,6 +37,8 @@ export default class Controller {
         e.preventDefault();
 
         const value = this.model.changeShapesPerSecond('decrease');
+
+        // Update shapes per second value
         this.view.showShapesPerSecond(value)
     }
 
@@ -43,12 +46,15 @@ export default class Controller {
         e.preventDefault();
 
         const value = this.model.changeShapesPerSecond('increase');
+
+        // Update shapes per second value
         this.view.showShapesPerSecond(value)
     }
 
     handleCanvasClick(e = InteractionEvent) {
         e.stopPropagation();
 
+        // Get stage coordinates on click
         this.createShapeOnClick(e.data.global)
     }
 
@@ -57,34 +63,43 @@ export default class Controller {
         const shape = e.target;
 
         shape.destroy();
+
+        // update View
         this.view.changeFillByType(shape.type)
         this.view.showShapesQuantity();
         this.view.showShapesArea();
     }
 
     addListeners() {
+        // Gravity controls
         const decGravityBtn = getElementById('dec-gravity-btn');
         const incGravityBtn = getElementById('inc-gravity-btn')
+        
+        // Shapes per second control
         const decShapesBtn = getElementById('dec-shapes-btn');
         const incShapesBtn = getElementById('inc-shapes-btn');
+
         const canvas = this.view.getCanvasElement();
 
         decGravityBtn.addEventListener('click', (e) => this.decreaseGravity(e));
         incGravityBtn.addEventListener('click', (e) => this.increaseGravity(e));
         decShapesBtn.addEventListener('click', (e) => this.decreaseShapesPerSecond(e));
         incShapesBtn.addEventListener('click', (e) => this.increaseShapesPerSecond(e));
-        canvas.on('pointerdown', (e) => this.handleCanvasClick(e))
+        canvas.on('pointerdown', (e) => this.handleCanvasClick(e));
     }
 
-    // main logic
+    // Main logic
 
     spawnShapes() {
         const { timeDelay } = this.model.state;
+
+        // spawn new shapes on interval
         this.timer = setInterval(() => {
             this.createShapes()
         }, timeDelay)
     }
 
+    // init gravity and shapes per second values
     initValues() {
         const { state } = this.model;
         this.view.showGravity(state.gravity);
@@ -94,7 +109,10 @@ export default class Controller {
     createShapeOnClick(pos) {
         const shape = this.model.getRandomShape(pos);
 
+        // Remove shape on click
         shape.on('pointerdown', (e) => this.handleRemoveShape(e))
+
+        // Render new shapes
         this.view.renderShapes([shape]);
     }
 
@@ -104,6 +122,7 @@ export default class Controller {
         const shapesList = [];
         const appWidth = this.view.getAppWidth();
 
+        // Get random coordinates
         for (let i = 0; i < state.shapesPerSecond; i++) {
             const pos = {
                 x : getRandomPos(state.radius, appWidth - state.radius),
@@ -115,9 +134,11 @@ export default class Controller {
             shapesList.push(shape);
         }
 
+        // Render new shapes
         this.view.renderShapes(shapesList);
     }
 
+    // init Controller
     init() {
         const { state } = this.model;
 

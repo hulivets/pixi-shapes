@@ -21,7 +21,7 @@ export default class Model {
             timeDelay        : 1000
         }
     }
-
+    // Change gravity value by type
     changeGravity(type) {
         switch (type) {
             case 'increase':
@@ -37,6 +37,7 @@ export default class Model {
         }
     }
 
+    // Change shapes per second value by type
     changeShapesPerSecond(type) {
         switch (type) {
             case 'increase':
@@ -52,6 +53,7 @@ export default class Model {
         }
     }
 
+    // Get random shape: circle, ellipse, polygon
     getRandomShape(pos) {
         const array = [
             this.createCircle,
