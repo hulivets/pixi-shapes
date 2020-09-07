@@ -1,22 +1,42 @@
-import { Application, Rectangle } from 'pixi.js';
+import { Application, Rectangle, ObjectRenderer, DisplayObject } from 'pixi.js';
 
 import {
     getElementById,
     getShapesArea,
 } from '../assets/utils/utils';
+
+interface ShapeOptions extends DisplayObject {
+    type: string
+    tint: number
+    vY: number
+}
+
 export default class View {
+    element: HTMLElement
+    app: Application
+    PIXELS_PER_METER: number
+    shapesQuantity: undefined | HTMLElement
+    shapesArea: undefined | HTMLElement
+    gravity: undefined | number
+
+    static instance: View;
+    static isExists: boolean = false
+
     constructor() {
         if (View.isExists) return View.instance;
 
-        View.instance = this;
-        View.isExists = true;
-        this.element = getElementById('pixi-shapes');
-        this.app = new Application({
+        const options: object = {
             view: this.element,
             height: 500,
             resolution: window.devicePixelRatio,
             backgroundColor: 0xFFFFFF
-        });
+        }
+
+        View.instance = this;
+        View.isExists = true;
+
+        this.element = getElementById('pixi-shapes');
+        this.app = new Application(options);
         this.PIXELS_PER_METER = this.app.screen.width / 1000;
     }
 
@@ -30,55 +50,55 @@ export default class View {
         this.app.ticker.add(delta => this.animateFalling(delta));
     }
 
-    showShapesQuantity() {
+    showShapesQuantity(): void {
         const { children } = this.app.stage;
 
         if (!this.shapesQuantity) this.shapesQuantity = getElementById('shapes-quantity');
 
-        this.shapesQuantity.textContent = children.length;
+        this.shapesQuantity.textContent = `${children.length}`;
     }
 
-    showShapesArea() {
+    showShapesArea(): void {
         const { children } = this.app.stage;
 
         if (!this.shapesArea) this.shapesArea = getElementById('shapes-area');
 
-        this.shapesArea.textContent = Math.floor(getShapesArea(children));
+        this.shapesArea.textContent = `${Math.floor(getShapesArea(children))}`;
     }
 
-    showGravity(value) {
-        const element = getElementById('gravity-input');
+    showGravity(value: number): void {
+        const element = <HTMLInputElement>getElementById('gravity-input');
 
         element.value = `Gravity value: ${value}`;
     }
 
-    showShapesPerSecond(value) {
-        const element = getElementById('shapes-per-second-input');
+    showShapesPerSecond(value: number) {
+        const element = <HTMLInputElement>getElementById('shapes-per-second-input');
 
         element.value = `Shapes per second: ${value}`;
     }
 
-    getAppWidth() {
+    getAppWidth(): number {
         return this.app.screen.width;
     }
 
     // Get stage
-    getCanvasElement() {
+    getCanvasElement(): object {
         return this.app.stage;
     }
 
-    updateGravity(gravity) {
+    updateGravity(gravity: number): void {
         this.gravity = gravity;
     }
 
     // Change shapes fill, after the same shape type was removed
-    changeFillByType(type) {
+    changeFillByType(type: string): void {
         const { children } = this.app.stage;
         if (!children.length) return;
 
-        const childrenFiltered = children.filter(shape => shape.type === type);
+        const childrenFiltered: object[] = children.filter((shape: ShapeOptions) => shape.type === type);
 
-        childrenFiltered.forEach(child => child.tint = Math.random() * 0xFFFFFF);
+        childrenFiltered.forEach((child: ShapeOptions) => child.tint = Math.random() * 0xFFFFFF);
     }
 
     // Animate shapes falling
@@ -86,7 +106,7 @@ export default class View {
         const { children } = this.app.stage;
         if (!children.length) return;
 
-        children.forEach(shape => {
+        children.forEach((shape: ShapeOptions) => {
             // Check if shape isn't in sight
             if (shape.position.y - 120 > this.app.renderer.height / this.app.renderer.resolution) {
                 shape.destroy();
