@@ -6,8 +6,36 @@ import {
     getRandomInt
 } from '../../assets/utils/utils';
 
+interface ShapeProps extends Graphics {
+    vY?: number,
+    type?: string,
+    area?: number
+}
+
+interface ContructorOptions {
+    pos: {
+        x: number,
+        y: number
+    },
+    radius: number,
+    strokeWidth: number,
+    strokeColor: number,
+    alpha: number,
+    sides: number
+}
+
 class Shape {
-    constructor({pos, radius, strokeWidth, strokeColor, alpha}) {
+        shape: ShapeProps
+        fill: number
+        pos: {x: number, y: number}
+        radius: number
+        strokeWidth: number
+        strokeColor: number
+        alpha: number
+        sides: number
+        paths: number[]
+
+    constructor({pos, radius, strokeWidth, strokeColor, alpha}: ContructorOptions) {
         this.shape = new Graphics();
         this.shape.interactive = true;
         this.shape.buttonMode = true;
@@ -23,13 +51,15 @@ class Shape {
 }
 
 export class Circle extends Shape {
-    constructor(options) {
+    shape: ShapeProps
+
+    constructor(options: ContructorOptions) {
         super(options);
 
         this.shape.type = 'circle';
     }
 
-    draw() {
+    draw(): object {
         this.shape.area = Math.PI * (this.radius * this.radius);
         this.shape.beginFill(this.fill);
         this.shape.lineStyle(this.strokeWidth, this.strokeColor, this.alpha);
@@ -41,11 +71,11 @@ export class Circle extends Shape {
 }
 
 export class Ellipse extends Shape {
-    constructor(options) {
+    constructor(options: ContructorOptions) {
         super(options);
     }
 
-    draw() {
+    draw(): object {
         this.shape.area = Math.PI * (this.radius * this.radius / 2);
         this.shape.beginFill(this.fill);
         this.shape.lineStyle(this.strokeWidth, this.strokeColor, this.alpha);
@@ -57,7 +87,7 @@ export class Ellipse extends Shape {
 }
 
 export class Polygon extends Shape {
-    constructor(options) {
+    constructor(options: ContructorOptions) {
         super(options);
 
         this.sides = options.sides || getRandomInt(3, 6);
@@ -65,7 +95,7 @@ export class Polygon extends Shape {
         this.shape.type = this._getShapeType(this.sides)
     }
 
-    _getPaths(sidesQuantity) {
+    _getPaths(sidesQuantity: number): number[] {
         const paths = [];
 
         for (let i = 0; i < sidesQuantity; i++) {
@@ -78,7 +108,7 @@ export class Polygon extends Shape {
         return paths;
     }
 
-    _getShapeType(sidesQuantity) {
+    _getShapeType(sidesQuantity:number): string {
         const types = {
             3 : 'triangle',
             4 : 'quadrangle',
@@ -89,7 +119,7 @@ export class Polygon extends Shape {
         return types[sidesQuantity];
     }
 
-    draw() {
+    draw(): object {
         this.shape.area = getPolygonArea(this.paths)
         this.shape.beginFill(this.fill);
         this.shape.lineStyle(this.strokeWidth, this.strokeColor, this.alpha);
