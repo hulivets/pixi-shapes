@@ -6,7 +6,21 @@ import {
     Polygon
 } from './Shape/Shape'
 
+interface State {
+    gravity          : number,
+    radius           : number,
+    shapesArea       : number,
+    shapesPerSecond  : number,
+    shapesQuantity   : number,
+    timeDelay        : number
+}
+
 export default class Model {
+    state: State
+
+    static instance: Model = undefined;
+    static isExists: boolean = false;
+
     constructor() {
         if (Model.isExists) return Model.instance;
 
@@ -22,7 +36,7 @@ export default class Model {
         }
     }
     // Change gravity value by type
-    changeGravity(type) {
+    changeGravity(type: string): number {
         switch (type) {
             case 'increase':
                 this.state.gravity += 1;
@@ -38,7 +52,7 @@ export default class Model {
     }
 
     // Change shapes per second value by type
-    changeShapesPerSecond(type) {
+    changeShapesPerSecond(type: string): number {
         switch (type) {
             case 'increase':
                 this.state.shapesPerSecond += 1;
@@ -67,7 +81,7 @@ export default class Model {
         return shape(pos)
     }
 
-    createCircle = (pos) => {
+    createCircle = (pos: {x: number, y: number}): object => {
         const { radius } = this.state;
         const circle = new Circle({
             pos,
@@ -77,10 +91,10 @@ export default class Model {
             alpha       : 0.6
         })
 
-        return circle.draw(pos);
+        return circle.draw();
     }
 
-    createEllipse = (pos) => {
+    createEllipse = (pos: {x: number, y: number}): object => {
         const { radius } = this.state;
         const ellipse = new Ellipse({
             pos,
@@ -90,10 +104,10 @@ export default class Model {
             alpha       : 0.6
         })
 
-        return ellipse.draw(pos);
+        return ellipse.draw();
     }
 
-    createPolygon = (pos) => {
+    createPolygon = (pos: {x: number, y: number}): object => {
         const { radius } = this.state;
         const polygon = new Polygon({
             pos,
@@ -103,6 +117,6 @@ export default class Model {
             alpha       : 0.6
         })
 
-        return polygon.draw(pos);
+        return polygon.draw();
     }
 }
