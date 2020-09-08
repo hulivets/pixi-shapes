@@ -2,19 +2,19 @@ export const getElementById = (id: string) => {
     return document.getElementById(id)
 };
 
-export const getRandomColor = () => {
+export const getRandomColor = (): number => {
     return Math.random() * 0xFFFFFF
 };
 
-export const getRandomPos = (min, max) => {
+export const getRandomPos = (min:number, max:number): number => {
     return Math.random() * (max - min) + min
 };
 
-export const getRandomInt = (min, max) => {
+export const getRandomInt = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-export const getPolygonArea = (paths = []) => {
+export const getPolygonArea = (paths: number[] = []): number => {
     const posX = paths.filter((x, index) => index % 2 === 0).concat(paths[0]);
     const posY = paths.filter((y, index) => index % 2 !== 0).concat(paths[1]);
 
@@ -31,7 +31,7 @@ export const getPolygonArea = (paths = []) => {
     return Math.abs(sumX - sumY);
 }
 
-export const getShapesArea = (shapes = []) => {
+export const getShapesArea = (shapes: {area: number}[] = []): number => {
     return shapes.reduce((total, current) => {
         return total + current.area;
     }, 0)
